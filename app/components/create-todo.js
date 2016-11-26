@@ -21,9 +21,19 @@ export default class TodosListHeader extends React.Component {
         <div className="row">
           <div className="input-field col s12 m6">
             <i className="material-icons prefix">message</i>
-            <input id="icon_prefix" type="text" className="validate" ref="createInput" />
-            <label htmlFor="icon_prefix">What do I need to do?</label>
+            <input id="task_description" type="text" className="validate" ref="descriptionInput" />
+            <label htmlFor="task_description">What do I need to do?</label>
             {this.renderError()}
+          </div>
+          <div className="input-field col s12 m5">
+            <i className="material-icons prefix">today</i>
+            <input id="task_deadline" type="date" ref="deadlineInput" />
+            <label className="active" htmlFor="task_deadline">By when?</label>
+          </div>
+          <div className="input-field col s12 m1">
+            <button className="btn-floating btn-small waves-effect waves-light green">
+              <i className="material-icons">add</i>
+            </button>
           </div>
         </div>
       </form>
@@ -33,9 +43,12 @@ export default class TodosListHeader extends React.Component {
   handleCreate(event) {
     event.preventDefault();
 
-    const createInput = this.refs.createInput;
-    const task = createInput.value;
+    const descriptionInput = this.refs.descriptionInput;
+    const task = descriptionInput.value;
     const validateInput = this.validateInput(task);
+
+    const deadlineInput = this.refs.deadlineInput;
+    const deadline = deadlineInput.value;
 
     if (validateInput) {
       this.setState({ error: validateInput });
@@ -43,8 +56,9 @@ export default class TodosListHeader extends React.Component {
     }
 
     this.setState({ error: null });
-    this.props.createTask(task);
-    this.refs.createInput.value = '';
+    this.props.createTask(task, deadline);
+    this.refs.descriptionInput.value = '';
+    this.refs.deadlineInput.value = '';
   }
 
   validateInput(task) {

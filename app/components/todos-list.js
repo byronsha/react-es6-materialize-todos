@@ -12,7 +12,7 @@ export default class TodosList extends React.Component {
 
   render() {
     return (
-      <div className="col s12 m6">
+      <div className="col s12 m12">
         <table className="bordered responsive">
           <TodosListHeader />
           <tbody>

@@ -10,7 +10,10 @@
   "author": "Byron Sha <byronysha@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
     "lodash": "^4.17.2",
+    "pg": "^6.1.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1"
   },

@@ -10,7 +10,7 @@ export default class TodosListItem extends React.Component {
   }
 
   renderTaskSection() {
-    const { task, isCompleted } = this.props;
+    const { task, deadline, isCompleted } = this.props;
 
     const taskStyle = {
       textDecoration: isCompleted ? 'line-through' : 'none',
@@ -24,21 +24,41 @@ export default class TodosListItem extends React.Component {
           <form onSubmit={this.onSaveClick.bind(this)}>
             <div className="input-field">
               <i className="material-icons prefix">mode_edit</i>
-              <input id="icon_prefix" type="text" className="validate" defaultValue={task} ref="editInput" />
-              <label className="active" htmlFor="icon_prefix">Description</label>
+              <input id="edit_task_description" type="text" className="validate" defaultValue={task} ref="editDescriptionInput" />
+              <label className="active" htmlFor="edit_task_description">Description</label>
             </div>
           </form>
         </td>
       );
     }
 
-    return (
-      <td style={taskStyle}
-          onClick={this.props.toggleTask.bind(this, task)}
-      >
-        {task}
-      </td>
-    );
+    return <td style={taskStyle} onClick={this.props.toggleTask.bind(this, task)}>{task}</td>;
+  }
+
+  renderDeadlineSection() {
+    const { task, deadline, isCompleted } = this.props;
+
+    const deadlineStyle = {
+      textDecoration: isCompleted ? 'line-through' : 'none',
+      color: isCompleted ? '#e57373' : '#4caf50',
+      cursor: 'pointer'
+    };
+
+    if (this.state.isEditing) {
+      return (
+        <td>
+          <form onSubmit={this.onSaveClick.bind(this)}>
+            <div className="input-field">
+              <i className="material-icons prefix">today</i>
+              <input id="edit_task_deadline" type="date" defaultValue={deadline} ref="editDeadlineInput" />
+              <label className="active" htmlFor="edit_task_deadline">By when?</label>
+            </div>
+          </form>
+        </td>
+      );
+    }
+
+    return <td style={deadlineStyle} onClick={this.props.toggleTask.bind(this, task)}>{deadline}</td>;
   }
 
   renderActionsSection() {
@@ -73,6 +93,7 @@ export default class TodosListItem extends React.Component {
     return (
       <tr>
         {this.renderTaskSection()}
+        {this.renderDeadlineSection()}
         {this.renderActionsSection()}
       </tr>
     );
@@ -90,8 +111,9 @@ export default class TodosListItem extends React.Component {
     event.preventDefault();
 
     const oldTask = this.props.task;
-    const newTask = this.refs.editInput.value;
-    this.props.saveTask(oldTask, newTask);
+    const newTask = this.refs.editDescriptionInput.value;
+    const newDeadline = this.refs.editDeadlineInput.value;
+    this.props.saveTask(oldTask, newTask, newDeadline);
     this.setState({ isEditing: false });
   }
 }

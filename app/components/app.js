@@ -5,10 +5,12 @@ import TodosList from './todos-list';
 const todos = [
 {
   task: 'make React tutorial',
+  deadline: '2016-11-30',
   isCompleted: false
 },
 {
   task: 'eat dinner',
+  deadline: '2016-12-05',
   isCompleted: true
 }
 ];
@@ -46,18 +48,20 @@ export default class App extends React.Component {
     this.setState({ todos: this.state.todos });
   }
 
-  createTask(task) {
+  createTask(task, deadline) {
     this.state.todos.push({
       task,
+      deadline,
       isCompleted: false
     });
     this.setState({ todos: this.state.todos });
   }
 
-  saveTask(oldTask, newTask) {
+  saveTask(oldTask, newTask, newDeadline) {
     const foundTodo = _.find(this.state.todos, todo => todo.task === oldTask);
 
     foundTodo.task = newTask;
+    foundTodo.deadline = newDeadline;
     this.setState({ todos: this.state.todos });
   }
 
